@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <!--Google Fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Oswald&family=Playfair+Display&display=swap"
+      rel="stylesheet"
+    />
+    <!--Custom Css-->
+    <link rel="stylesheet" href="styles.css" />
+    <title>The Spooky Shop</title>
+  </head>
+  <body>
+    <div id="app">
+      <header>
+        <h1>{{siteName}}</h1>
+        <button
+          class="cartButton"
+          type="button"
+          v-on:click="isProductPage = !isProductPage"
+        >
+          {{cartItemCount}} checkout
+        </button>
+      </header>
+
+      <main class="product-page" v-if="isProductPage">
+        <h2>{{product.title}}</h2>
+        <p v-html="product.description"></p>
+        <p>Amount In Stock: {{product.inventory}}</p>
+        <p v-if="lowInventory">
+          Almost Sold out! Only {{product.inventory}} items are left!
+        </p>
+        <p v-if="lowPrice" id="price">On Sale!</p>
+        <p :class="{onSale: product.onSale}">{{formatPrice}}</p>
+        <img :src="product.image" />
+        <div>
+          <button :disabled="outOfStock" v-on:click="addToCart">
+            Add To Bag
+          </button>
+        </div>
+      </main>
+
+      <main class="product-page" v-else>
+        <!--Display the product image.
+          Display inventory available. Ex, if there were initially 5 items in the inventory and you have 3 in the cart then you should display: "2 more items available".
+          Create a button with the text, "remove 1 item from cart" that when clicked on removes an item from the cart.
+          Render a subtotal, Ex, if the item costs $20.00 and you have 3 of items in your cart then the subtotal should be $60.00 .-->
+        <h1>Shopping Cart</h1>
+        <img :src="product.image" />
+        <p>Amount In Stock: {{product.inventory}}</p>
+        <button v-on:click="removeFromCart" :disabled="cartItemCount <= 0">
+          Remove Item
+        </button>
+        <p>${{cartTotal}}</p>
+      </main>
+    </div>
+
+    <!--Vue CDN-->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <!--Custom JS-->
+    <script src="script.js"></script>
+  </body>
+</html>
